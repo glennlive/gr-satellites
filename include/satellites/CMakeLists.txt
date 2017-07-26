@@ -31,5 +31,5 @@ install(FILES
     lilacsat1_demux.h
     varlen_packet_tagger.h
     varlen_packet_framer.h
-    DESTINATION include/satellites
+    burst_ample.h DESTINATION include/satellites
 )

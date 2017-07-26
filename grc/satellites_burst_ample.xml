@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<block>
+  <name>Burst Extender</name>
+  <key>satellites_burst_ample</key>
+  <category>[Satellites]/Packet</category>
+  <import>import satellites</import>
+  <make>satellites.burst_ample($packetlen_tag, $preamble, $interamble, $postamble)</make>
+
+  <param>
+    <name>Packet Length Tag</name>
+    <key>packetlen_tag</key>
+    <value>packet_len</value>
+    <type>string</type>
+  </param>
+
+  <param>
+    <name>Preamble</name>
+    <key>preamble</key>
+    <value>(0,1,0,1,0,1,0,1)</value>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Interpacket</name>
+    <key>interamble</key>
+    <value>()</value>
+    <type>raw</type>
+  </param>
+  <param>
+    <name>Postamble</name>
+    <key>postamble</key>
+    <value>(0,0,1,1,0,0,1,1)</value>
+    <type>raw</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>byte</type>
+  </source>
+  <doc>
+    Add preambles and postambles around every frame.
+  </doc>
+
+</block>
