@@ -23,8 +23,11 @@
 #include <gnuradio/io_signature.h>
 #include "burst_ample_impl.h"
 
+#define MTU 1024
+
 namespace gr {
   namespace satellites {
+    
 
     burst_ample::sptr
     burst_ample::make(const std::string &packet_key,
@@ -46,11 +49,12 @@ namespace gr {
       : gr::tagged_stream_block("burst_ample",
               gr::io_signature::make(1, 1, sizeof(char)),
               gr::io_signature::make(1, 1, sizeof(char)), packet_key),
-      d_required_output_len(1),
       d_preamble(preamble),
       d_interamble(interamble),
       d_postamble(postamble)
-    {}
+    {
+      d_required_output_len = MTU*8 + d_preamble.size() + d_postamble.size();
+    }
 
     /*
      * Our virtual destructor.
@@ -75,13 +79,17 @@ namespace gr {
       const unsigned char *in = (const unsigned char *) input_items[0];
       unsigned char *out = (unsigned char *) output_items[0];
 
-      // recompute required output length
+
       d_required_output_len = ninput_items[0] + d_preamble.size() + d_postamble.size();
+      GR_LOG_DEBUG(d_debug_logger,
+          boost::format("ni: %ld, no: %ld, nw: %ld, ps: %d") \
+          % ninput_items[0] % noutput_items % nitems_written(0) % d_required_output_len)
+      // recompute required output length
       if (noutput_items < d_required_output_len) {
         set_min_noutput_items(d_required_output_len);
         return 0;
       }
-      d_required_output_len = 1;
+      d_required_output_len = MTU*8 + d_preamble.size() + d_postamble.size();
 
       // TODO: add timing to wait for more packets...
 
