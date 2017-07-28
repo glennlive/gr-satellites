@@ -18,6 +18,7 @@
 #include "satellites/varlen_packet_tagger.h"
 #include "satellites/varlen_packet_framer.h"
 #include "satellites/burst_ample.h"
+#include "satellites/encode_rs.h"
 %}
 
 %include "satellites/decode_rs.h"
@@ -41,3 +42,5 @@ GR_SWIG_BLOCK_MAGIC2(satellites, varlen_packet_tagger);
 GR_SWIG_BLOCK_MAGIC2(satellites, varlen_packet_framer);
 %include "satellites/burst_ample.h"
 GR_SWIG_BLOCK_MAGIC2(satellites, burst_ample);
+%include "satellites/encode_rs.h"
+GR_SWIG_BLOCK_MAGIC2(satellites, encode_rs);

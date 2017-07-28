@@ -39,6 +39,7 @@ list(APPEND satellites_sources
     varlen_packet_framer_impl.cc
     viterbi.c
     burst_ample_impl.cc
+    encode_rs_impl.cc
 )
 
 set(satellites_sources "${satellites_sources}" PARENT_SCOPE)
