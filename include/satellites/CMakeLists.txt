@@ -30,6 +30,7 @@ install(FILES
     u482c_decode.h
     lilacsat1_demux.h
     varlen_packet_tagger.h
+    varlen_packet_tagger_pdu.h
     varlen_packet_framer.h
     burst_ample.h DESTINATION include/satellites
 )

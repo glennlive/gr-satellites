@@ -36,6 +36,7 @@ list(APPEND satellites_sources
     golay24.c
     lilacsat1_demux_impl.cc
     varlen_packet_tagger_impl.cc
+    varlen_packet_tagger_pdu_impl.cc
     varlen_packet_framer_impl.cc
     viterbi.c
     burst_ample_impl.cc

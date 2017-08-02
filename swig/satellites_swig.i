@@ -16,6 +16,7 @@
 #include "satellites/u482c_decode.h"
 #include "satellites/lilacsat1_demux.h"
 #include "satellites/varlen_packet_tagger.h"
+#include "satellites/varlen_packet_tagger_pdu.h"
 #include "satellites/varlen_packet_framer.h"
 #include "satellites/burst_ample.h"
 %}
@@ -41,3 +42,5 @@ GR_SWIG_BLOCK_MAGIC2(satellites, varlen_packet_tagger);
 GR_SWIG_BLOCK_MAGIC2(satellites, varlen_packet_framer);
 %include "satellites/burst_ample.h"
 GR_SWIG_BLOCK_MAGIC2(satellites, burst_ample);
+%include "satellites/varlen_packet_tagger_pdu.h"
+GR_SWIG_BLOCK_MAGIC2(satellites, varlen_packet_tagger_pdu);
