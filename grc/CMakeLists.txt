@@ -57,5 +57,5 @@ install(FILES
     satellites_varlen_packet_tagger_pdu.xml 
     satellites_varlen_packet_framer.xml
     satellites_burst_ample.xml
-    DESTINATION share/gnuradio/grc/blocks
+    satellites_encode_rs.xml DESTINATION share/gnuradio/grc/blocks
 )

@@ -32,5 +32,6 @@ install(FILES
     varlen_packet_tagger.h
     varlen_packet_tagger_pdu.h
     varlen_packet_framer.h
-    burst_ample.h DESTINATION include/satellites
+    burst_ample.h
+    encode_rs.h DESTINATION include/satellites
 )
