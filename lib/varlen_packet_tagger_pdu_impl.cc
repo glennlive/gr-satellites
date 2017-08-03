@@ -129,7 +129,6 @@ namespace gr {
       unsigned char *p;
       
       if (d_have_sync) {
-        std::cout << "sync!\n";
         if (d_header_length > ninput_items[0]) {
           // not enough data yet
           return 0;
@@ -176,8 +175,6 @@ namespace gr {
             }
           }
       
-          std::cout << "packet! " << packet_len << std::endl;
-
           p = (unsigned char*) &in[d_header_length];
           switch(d_oend) {
           default:
