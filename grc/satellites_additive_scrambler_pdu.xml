@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<block>
+  <name>Additive Scrambler</name>
+  <key>satellites_additive_scrambler_pdu</key>
+  <category>[Satellites]/Coding</category>
+  <import>import satellites</import>
+  <make>satellites.additive_scrambler_pdu($mask, $seed, $len, $bits_per_byte)</make>
+	<param>
+		<name>Mask</name>
+		<key>mask</key>
+		<value>0x8A</value>
+		<type>hex</type>
+	</param>
+	<param>
+		<name>Seed</name>
+		<key>seed</key>
+		<value>0x7F</value>
+		<type>hex</type>
+	</param>
+	<param>
+		<name>Length</name>
+		<key>len</key>
+		<value>7</value>
+		<type>int</type>
+	</param>
+	<param>
+		<name>Bits per byte</name>
+		<key>bits_per_byte</key>
+		<value>1</value>
+		<type>int</type>
+	</param>
+  <sink>
+    <name>in</name>
+    <type>message</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>message</type>
+  </source>
+</block>

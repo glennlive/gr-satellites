@@ -31,5 +31,5 @@ install(FILES
     lilacsat1_demux.h
     varlen_packet_tagger.h
     varlen_packet_framer.h
-    DESTINATION include/satellites
+    additive_scrambler_pdu.h DESTINATION include/satellites
 )
