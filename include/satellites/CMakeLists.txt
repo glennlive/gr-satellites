@@ -29,7 +29,10 @@ install(FILES
     ax100_decode.h
     u482c_decode.h
     lilacsat1_demux.h
-    varlen_packet_tagger.h
+    additive_scrambler_pdu.h
     varlen_packet_framer.h
-    additive_scrambler_pdu.h DESTINATION include/satellites
+    varlen_packet_tagger.h
+    varlen_packet_tagger_pdu.h
+    burst_ample.h
+    encode_rs.h DESTINATION include/satellites
 )

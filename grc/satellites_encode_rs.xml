@@ -1,25 +1,10 @@
 <?xml version="1.0"?>
 <block>
-  <name>Reed-Solomon Decoder</name>
-  <key>satellites_decode_rs</key>
+  <name>Reed-Solomon Encoder</name>
+  <key>satellites_encode_rs</key>
   <category>[Satellites]/FEC</category>
   <import>import satellites</import>
-  <make>satellites.decode_rs($verbose, $basis)</make>
-
-  <param>
-    <name>Verbose</name>
-    <key>verbose</key>
-    <value>False</value>
-    <type>bool</type>
-     <option>
-       <name>Yes</name>
-       <key>True</key>
-     </option>
-     <option>
-       <name>No</name>
-       <key>False</key>
-     </option>
-  </param>
+  <make>satellites.encode_rs($basis)</make>
 
   <param>
     <name>Basis</name>
@@ -45,4 +30,5 @@
     <name>out</name>
     <type>message</type>
   </source>
+
 </block>
