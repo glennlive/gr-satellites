@@ -70,7 +70,7 @@ GR_PYTHON_INSTALL(
     au03_telemetry_parser.py
     au03_telemetry.py
     check_tt64_crc.py
-    DESTINATION ${GR_PYTHON_DIR}/satellites
+    msg_counter.py DESTINATION ${GR_PYTHON_DIR}/satellites
 )
 
 ########################################################################

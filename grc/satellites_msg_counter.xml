@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<block>
+  <name>msg_counter</name>
+  <key>satellites_msg_counter</key>
+  <category>[Satellites]/Misc</category>
+  <import>import satellites</import>
+  <make>satellites.msg_counter()</make>
+  <sink>
+    <name>in</name>
+    <type>message</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>message</type>
+  </source>
+</block>

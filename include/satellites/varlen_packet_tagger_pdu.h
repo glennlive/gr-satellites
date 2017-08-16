@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2017 Glenn Richardson <glenn@spacequest.com> 
+ * Copyright 2017 Glenn Richardson <glenn@spacequest.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,7 +45,7 @@ namespace gr {
        * class. satellites::varlen_packet_tagger_pdu::make is the public interface for
        * creating new instances.
        */
-      static sptr make(const std::string &sync_key, const std::string &packet_key, int length_field_size, int max_packet_size, endianness_t header_endianness, endianness_t output_endianness, bool use_golay);
+      static sptr make(const std::string &sync_key, const std::string &packet_key, int length_field_size, int max_packet_size, endianness_t header_endianness, endianness_t output_endianness, bool use_golay, int bits_per_byte);
     };
 
   } // namespace satellites

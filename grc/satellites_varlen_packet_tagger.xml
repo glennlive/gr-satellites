@@ -4,57 +4,119 @@
   <key>satellites_varlen_packet_tagger</key>
   <category>[Satellites]/Packet</category>
   <import>import satellites</import>
-  <make>satellites.varlen_packet_tagger($syncword_tag, $packetlen_tag, $length_field_size, $mtu, $endianness, $use_golay)</make>
+  <make>#if $type()=='message'
+satellites.varlen_packet_tagger_pdu($syncword_tag, $packetlen_tag, $length_field_size, $mtu, $hend, $oend, $use_golay, $bits_per_byte)
+#else
+satellites.varlen_packet_tagger($syncword_tag, $packetlen_tag, $length_field_size, $mtu, $endianness, $use_golay)
+#end if</make>
+  <param>
+    <name>Type</name>
+    <key>type</key>
+    <type>enum</type>
+    <option>
+      <name>Tagged Stream</name>
+      <key>byte</key>
+    </option>
+    <option>
+      <name>PDU</name>
+      <key>message</key>
+    </option>
+  </param>
+
   <param>
     <name>Syncword Tag</name>
     <key>syncword_tag</key>
     <value>syncword</value>
     <type>string</type>
   </param>
+
+  <param>
+    <name>MTU</name>
+    <key>mtu</key>
+    <value>256*8</value>
+    <type>int</type>
+  </param>
+
   <param>
     <name>Packet Length Tag</name>
     <key>packetlen_tag</key>
     <value>packet_len</value>
     <type>string</type>
+    <hide>#if $type() == 'message' then 'all' else 'none'#</hide>
   </param>
+
   <param>
-    <name>Packet Length Size</name>
-    <key>length_field_size</key>
-    <value>12</value>
-    <type>int</type>
-  </param>
-  <param>
-    <name>MTU</name>
-    <key>mtu</key>
-    <value>255*8</value>
-    <type>int</type>
-  </param>
- 	<param>
-		<name>Endianness</name>
-		<key>endianness</key>
-    <value>gr.GR_MSB_FIRST</value>
-    <type>int</type>
-		<option>
-			<name>MSB</name>
-			<key>gr.GR_MSB_FIRST</key>
-		</option>
-		<option>
-			<name>LSB</name>
-			<key>gr.GR_LSB_FIRST</key>
-		</option>
-	</param>
-  <param>
-    <name>Golay Decoding</name>
+    <name>Header Type</name>
     <key>use_golay</key>
     <value>True</value>
-    <type>bool</type>
+    <type>enum</type>
     <option>
-      <name>Off</name>
+      <name>Fixed Length</name>
       <key>False</key>
     </option>
     <option>
-      <name>On</name>
+      <name>12-bit Golay</name>
       <key>True</key>
+    </option>
+  </param>
+  <param>
+    <name>Packet Length Field Size</name>
+    <key>length_field_size</key>
+    <value>12</value>
+    <type>int</type>
+    <hide>#if $use_golay() then 'all' else 'none'#</hide>
+  </param>
+
+  <param>
+    <name>Header Endianness</name>
+    <key>hend</key>
+    <value>gr.GR_MSB_FIRST</value>
+    <type>int</type>
+    <hide>#if $type() == 'message' then 'none' else 'all'#</hide>
+    <option>
+      <name>MSB</name>
+      <key>gr.GR_MSB_FIRST</key>
+    </option>
+    <option>
+      <name>LSB</name>
+      <key>gr.GR_LSB_FIRST</key>
+    </option>
+  </param>
+  <param>
+    <name>Output Endianness</name>
+    <key>oend</key>
+    <value>gr.GR_MSB_FIRST</value>
+    <type>int</type>
+    <hide>#if $type() == 'message' then 'none' else 'all'#</hide>
+    <option>
+      <name>MSB</name>
+      <key>gr.GR_MSB_FIRST</key>
+    </option>
+    <option>
+      <name>LSB</name>
+      <key>gr.GR_LSB_FIRST</key>
+    </option>
+  </param>
+  <param>
+    <name>Output Bits per Byte</name>
+    <key>bits_per_byte</key>
+    <value>1</value>
+    <type>int</type>
+    <hide>#if $type() == 'message' then 'none' else 'all'#</hide>
+  </param>
+  <param>
+    <name>Endianness</name>
+    <key>endianness</key>
+    <value>gr.GR_MSB_FIRST</value>
+    <type>int</type>
+    <hide>#if $type() == 'byte' then 'none' else 'all'#</hide>
+    <option>
+      <name>MSB</name>
+      <key>gr.GR_MSB_FIRST</key>
+    </option>
+    <option>
+      <name>LSB</name>
+      <key>gr.GR_LSB_FIRST</key>
     </option>
   </param>
 
@@ -64,10 +126,10 @@
   </sink>
   <source>
     <name>out</name>
-    <type>byte</type>
+    <type>$type</type>
   </source>
   <doc>
-    Converts a stream of data into a tagged stream.
+    Converts a stream of data into a tagged stream or PDU message.
 
     The packet length is extracted from a header in the stream.
   </doc>

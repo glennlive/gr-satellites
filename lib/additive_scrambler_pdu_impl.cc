@@ -3,9 +3,9 @@
 #ifdef HAVE_CONFIG_H
 #include "config.h"
 #endif
-
-#include <gnuradio/io_signature.h>
 #include "additive_scrambler_pdu_impl.h"
+#include <gnuradio/io_signature.h>
+#include <gnuradio/blocks/pdu.h>
 
 #define MAX_MTU 256*8
 
@@ -34,11 +34,10 @@ namespace gr {
       if (d_bits_per_byte < 1 || d_bits_per_byte > 8) {
 	throw std::invalid_argument("bits_per_byte must be in (1, 8)");
       }
-
-      message_port_register_in(pmt::mp("out"));
-      message_port_register_out(pmt::mp("in"));
+      message_port_register_in(pmt::mp("in"));
+      message_port_register_out(pmt::mp("out"));
       set_msg_handler(pmt::mp("in"),
-	              boost::bind(&additive_scrambler_pdu_impl::msg_handler, this, _1));
+	              boost::bind(&additive_scrambler_pdu_impl::scramble_msg, this, _1));
     }
 
     /*
@@ -47,11 +46,11 @@ namespace gr {
     additive_scrambler_pdu_impl::~additive_scrambler_pdu_impl()
     {
     }
-
+/*
     void
     additive_scrambler_pdu_impl::forecast (int noutput_items, gr_vector_int &ninput_items_required)
     {
-    }
+    }*/
 
     int
     additive_scrambler_pdu_impl::mask() const
@@ -71,20 +70,10 @@ namespace gr {
       return d_len;
     }
 
-
-    int
-    additive_scrambler_pdu_impl::general_work (int noutput_items,
-                       gr_vector_int &ninput_items,
-                       gr_vector_const_void_star &input_items,
-                       gr_vector_void_star &output_items)
-    {
-      return 0;
-    }
-
     void
-    additive_scrambler_pdu_impl::msg_handler(pmt::pmt_t pmt_msg)
+    additive_scrambler_pdu_impl::scramble_msg(pmt::pmt_t pdu)
     {
-      pmt::pmt_t msg = pmt::cdr(pmt_msg);
+      pmt::pmt_t msg = pmt::cdr(pdu);
       size_t offset(0);
       const uint8_t *in = (const uint8_t *) pmt::uniform_vector_elements(msg, offset);
       int frame_len = pmt::length(msg);
@@ -100,10 +89,9 @@ namespace gr {
 	}
 	out[i] = in[i] ^ scramble_byte;
       }
+      message_port_pub(pmt::mp("out"), pmt::cons(pmt::PMT_NIL,
+                       pmt::init_u8vector(frame_len, (const uint8_t*)&out[0])));
 
-      message_port_pub(pmt::mp("out"),
-	               pmt::cons(pmt::PMT_NIL,
-			         pmt::init_u8vector(frame_len, out)));
     }
 
   } /* namespace satellites */
