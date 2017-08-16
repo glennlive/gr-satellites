@@ -59,5 +59,7 @@ install(FILES
     satellites_varlen_packet_framer.xml
     satellites_burst_ample.xml
     satellites_encode_rs.xml
-    satellites_msg_counter.xml DESTINATION share/gnuradio/grc/blocks
+    satellites_msg_counter.xml
+    satellites_append_crc32c.xml
+    DESTINATION share/gnuradio/grc/blocks
 )
