@@ -16,11 +16,12 @@ namespace gr {
       int d_len;
       int d_seed;
       int d_bits_per_byte;
+      endianness_t d_endianness;
 
       void scramble_msg(pmt::pmt_t pmt_msg);
 
      public:
-      additive_scrambler_pdu_impl(int mask, int seed, int len, int bits_per_byte);
+      additive_scrambler_pdu_impl(int mask, int seed, int len, int bits_per_byte, endianness_t endianness);
       ~additive_scrambler_pdu_impl();
 
       int mask() const;

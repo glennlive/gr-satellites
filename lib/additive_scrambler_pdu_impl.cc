@@ -13,23 +13,24 @@ namespace gr {
   namespace satellites {
 
     additive_scrambler_pdu::sptr
-    additive_scrambler_pdu::make(int mask, int seed, int len, int bits_per_byte)
+    additive_scrambler_pdu::make(int mask, int seed, int len, int bits_per_byte, endianness_t endianness)
     {
       return gnuradio::get_initial_sptr
-        (new additive_scrambler_pdu_impl(mask, seed, len, bits_per_byte));
+        (new additive_scrambler_pdu_impl(mask, seed, len, bits_per_byte, endianness));
     }
 
     /*
      * The private constructor
      */
-    additive_scrambler_pdu_impl::additive_scrambler_pdu_impl(int mask, int seed, int len, int bits_per_byte)
+    additive_scrambler_pdu_impl::additive_scrambler_pdu_impl(int mask, int seed, int len, int bits_per_byte, endianness_t endianness)
       : gr::block("additive_scrambler_pdu",
               gr::io_signature::make(0,0,0),
               gr::io_signature::make(0,0,0)),
         d_lfsr(mask, seed, len),
         d_len(len),
 	d_seed(seed),
-	d_bits_per_byte(bits_per_byte)
+	d_bits_per_byte(bits_per_byte),
+        d_endianness(endianness)
     {
       if (d_bits_per_byte < 1 || d_bits_per_byte > 8) {
 	throw std::invalid_argument("bits_per_byte must be in (1, 8)");
@@ -84,9 +85,15 @@ namespace gr {
       d_lfsr.reset();
       for (int i=0; i<frame_len; i++) {
 	unsigned char scramble_byte = 0x0;
-	for (int k=0; k < d_bits_per_byte; k++) {
-	  scramble_byte ^= (d_lfsr.next_bit() << k);
-	}
+        if (d_endianness == GR_MSB_FIRST) {
+          for (int k=d_bits_per_byte; k >= 0; k--) {
+            scramble_byte ^= (d_lfsr.next_bit() << k);
+          }
+        } else {
+          for (int k=0; k < d_bits_per_byte; k++) {
+            scramble_byte ^= (d_lfsr.next_bit() << k);
+          }
+        }
 	out[i] = in[i] ^ scramble_byte;
       }
       message_port_pub(pmt::mp("out"), pmt::cons(pmt::PMT_NIL,

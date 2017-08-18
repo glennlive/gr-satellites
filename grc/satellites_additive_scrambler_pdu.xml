@@ -4,7 +4,7 @@
   <key>satellites_additive_scrambler_pdu</key>
   <category>[Satellites]/Coding</category>
   <import>import satellites</import>
-  <make>satellites.additive_scrambler_pdu($mask, $seed, $len, $bits_per_byte)</make>
+  <make>satellites.additive_scrambler_pdu($mask, $seed, $len, $bits_per_byte, $endianness)</make>
 	<param>
 		<name>Mask</name>
 		<key>mask</key>
@@ -29,6 +29,20 @@
 		<value>1</value>
 		<type>int</type>
 	</param>
+  <param>
+    <name>Endianness</name>
+    <key>endianness</key>
+    <value>gr.GR_MSB_FIRST</value>
+    <type>int</type>
+    <option>
+      <name>MSB</name>
+      <key>gr.GR_MSB_FIRST</key>
+    </option>
+    <option>
+      <name>LSB</name>
+      <key>gr.GR_LSB_FIRST</key>
+    </option>
+  </param>
   <sink>
     <name>in</name>
     <type>message</type>

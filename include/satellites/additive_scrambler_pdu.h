@@ -5,6 +5,7 @@
 
 #include <satellites/api.h>
 #include <gnuradio/block.h>
+#include <gnuradio/endianness.h>
 
 namespace gr {
   namespace satellites {
@@ -27,7 +28,7 @@ namespace gr {
        * class. satellites::additive_scrambler_pdu::make is the public interface for
        * creating new instances.
        */
-      static sptr make(int mask, int seed, int len, int bits_per_byte);
+      static sptr make(int mask, int seed, int len, int bits_per_byte, endianness_t endianness);
 
       virtual int mask() const = 0;
       virtual int seed() const = 0;
