@@ -33,7 +33,7 @@
     <name>Endianness</name>
     <key>endianness</key>
     <value>gr.GR_MSB_FIRST</value>
-    <type>int</type>
+    <type>enum</type>
     <option>
       <name>MSB</name>
       <key>gr.GR_MSB_FIRST</key>

@@ -86,8 +86,8 @@ namespace gr {
       for (int i=0; i<frame_len; i++) {
 	unsigned char scramble_byte = 0x0;
         if (d_endianness == GR_MSB_FIRST) {
-          for (int k=d_bits_per_byte; k >= 0; k--) {
-            scramble_byte ^= (d_lfsr.next_bit() << k);
+          for (int k=0; k < d_bits_per_byte; k++) {
+            scramble_byte ^= (d_lfsr.next_bit() << (d_bits_per_byte - 1 - k) );
           }
         } else {
           for (int k=0; k < d_bits_per_byte; k++) {

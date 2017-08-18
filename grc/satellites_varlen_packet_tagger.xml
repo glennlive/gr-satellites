@@ -71,7 +71,7 @@ satellites.varlen_packet_tagger($syncword_tag, $packetlen_tag, $length_field_siz
     <name>Header Endianness</name>
     <key>hend</key>
     <value>gr.GR_MSB_FIRST</value>
-    <type>int</type>
+    <type>enum</type>
     <hide>#if $type() == 'message' then 'none' else 'all'#</hide>
     <option>
       <name>MSB</name>
@@ -86,7 +86,7 @@ satellites.varlen_packet_tagger($syncword_tag, $packetlen_tag, $length_field_siz
     <name>Output Endianness</name>
     <key>oend</key>
     <value>gr.GR_MSB_FIRST</value>
-    <type>int</type>
+    <type>enum</type>
     <hide>#if $type() == 'message' then 'none' else 'all'#</hide>
     <option>
       <name>MSB</name>
@@ -108,7 +108,7 @@ satellites.varlen_packet_tagger($syncword_tag, $packetlen_tag, $length_field_siz
     <name>Endianness</name>
     <key>endianness</key>
     <value>gr.GR_MSB_FIRST</value>
-    <type>int</type>
+    <type>enum</type>
     <hide>#if $type() == 'byte' then 'none' else 'all'#</hide>
     <option>
       <name>MSB</name>
