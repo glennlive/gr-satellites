@@ -72,6 +72,7 @@ GR_PYTHON_INSTALL(
     check_tt64_crc.py
     msg_counter.py
     append_crc32c.py
+    dsat_image_decoder.py
     DESTINATION ${GR_PYTHON_DIR}/satellites
 )
 

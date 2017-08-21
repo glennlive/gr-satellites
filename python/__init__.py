@@ -77,3 +77,6 @@ from check_tt64_crc import check_tt64_crc
 from msg_counter import msg_counter
 
 from append_crc32c import append_crc32c
+
+from dsat_image_decoder import dsat_image_decoder
+

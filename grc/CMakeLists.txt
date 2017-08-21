@@ -61,5 +61,6 @@ install(FILES
     satellites_encode_rs.xml
     satellites_msg_counter.xml
     satellites_append_crc32c.xml
+    satellites_dsat_image_decoder.xml
     DESTINATION share/gnuradio/grc/blocks
 )
