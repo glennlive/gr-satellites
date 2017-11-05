@@ -46,6 +46,7 @@ list(APPEND satellites_sources
     rscode/galois.c
     rscode/rs.c
     rscode_decoder_impl.cc
+    digital_upsampler_impl.cc
 )
 
 set(satellites_sources "${satellites_sources}" PARENT_SCOPE)

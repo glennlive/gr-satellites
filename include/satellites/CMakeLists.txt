@@ -37,5 +37,5 @@ install(FILES
     varlen_packet_framer.h
     nusat_decoder.h
     rscode_decoder.h
-    DESTINATION include/satellites
+    digital_upsampler.h DESTINATION include/satellites
 )

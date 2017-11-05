@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<block>
+  <name>Digital Upsampler</name>
+  <key>satellites_digital_upsampler</key>
+  <category>[Satellites]/Misc</category>
+  <import>import satellites</import>
+  <make>satellites.digital_upsampler($input_rate, $output_rate)</make>
+  <callback>set_input_rate($input_rate)</callback>
+  <param>
+    <name>Input Rate</name>
+    <key>input_rate</key>
+    <value>0</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Output Rate</name>
+    <key>output_rate</key>
+    <value>0</value>
+    <type>int</type>
+  </param>
+  <sink>
+    <name>in</name>
+    <type>byte</type>
+  </sink>
+  <source>
+    <name>out</name>
+    <type>byte</type>
+  </source>
+  <doc>
+    Convert a digital signal of a known bit rate to a new sample rate.  Input is unstuffed bytes (one bit per byte: either 0 or 1).
+  </doc>
+
+</block>

@@ -23,6 +23,7 @@
 #include "satellites/varlen_packet_framer.h"
 #include "satellites/nusat_decoder.h"
 #include "satellites/rscode_decoder.h"
+#include "satellites/digital_upsampler.h"
 %}
 
 %include "satellites/decode_rs.h"
@@ -54,3 +55,5 @@ GR_SWIG_BLOCK_MAGIC2(satellites, encode_rs);
 GR_SWIG_BLOCK_MAGIC2(satellites, nusat_decoder);
 %include "satellites/rscode_decoder.h"
 GR_SWIG_BLOCK_MAGIC2(satellites, rscode_decoder);
+%include "satellites/digital_upsampler.h"
+GR_SWIG_BLOCK_MAGIC2(satellites, digital_upsampler);
