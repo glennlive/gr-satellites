@@ -6,7 +6,7 @@ several satellites. The decoders don't need a graphical interface to run, so
 they can be used in an embedded or remote computer. The decoders are designed to
 run in real time and print the telemetry packets to the terminal as they are
 received. Optionally, the telemetry packets can be uploaded in real time to the
-[PE0SAT telemetry server](http://tlm.pe0sat.nl/) or any other telemetry server
+[SatNOGS database](http://db.satnogs.org/) or any other telemetry server
 that implements the SiDS (Simple Downlink Sharing Convention) protocol.
 
 It is also possible to use the decoder with a recording (audio WAV or IQ file),
@@ -113,7 +113,7 @@ telemetry packet in the terminal as soon as it receives it.
     receive this satellite.
   * `aisat`
     [AISAT](https://directory.eoportal.org/web/eoportal/satellite-missions/a/aisat),
-    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a Nanocom
+    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a NanoCom
     U482C transceiver with the CSP protocol and FEC with a (255,223)
     Reed-Solomon code. It also uses a CCSDS scrambler. There is no telemetry
     parser yet, as the beacon format is unknown. This satellite has an AIS
@@ -122,11 +122,12 @@ telemetry packet in the terminal as soon as it receives it.
     [QB50 AT03 (PEGASUS)](https://spacedatacenter.at/pegasus/),
     which transmits 9k6 GFSK telemetry in the 70cm band. It uses the TT-64
     protocol, which includes a CRC16-ARC and FEC with a (64,48) Reed-Solomon
-    code. Reed-Solomon decoding is not implemented yet. You must use FM mode to
+    code. Reed-Solomon decoding is done with the
+    [rscode](http://rscode.sourceforge.net/) library. You must use FM mode to
     receive this satellite.
   * `athenoxat-1`
     [ATHENOXAT-1](http://space.skyrocket.de/doc_sdat/athenoxat-1.htm),
-    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a Nanocom
+    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a NanoCom
     U482C transceiver, with the CSP protocol and FEC with a (255,223)
     Reed-Solomon code. It also uses a CCSDS scrambler. There is no telemetry
     parser yet, as the beacon format is unknown. This satellite is on a low
@@ -134,13 +135,13 @@ telemetry packet in the terminal as soon as it receives it.
     use FM mode to receive this satellite.
   * `au02`
     [QB50 AU02 (UNSW-EC0)](http://www.acser.unsw.edu.au/QB50),
-    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a Nanocom
+    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a NanoCom
     U482C transceiver, with the CSP protocol and FEC with an r=1/2, k=7
     convolutional code and a (255,223) Reed-Solomon code. It also uses a CCSDS
     scrambler. You must use FM mode to receive this satellite.
   * `au03`
     [QB50 AU03 (i-INSPIRE II)](http://sydney.edu.au/inspire-cubesat/project/index.shtml),
-    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a Nanocom
+    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a NanoCom
     U482C transceiver, with the CSP protocol and FEC with an r=1/2, k=7
     convolutional code and a (255,223) Reed-Solomon code. It also uses a CCSDS
     scrambler. You must use FM mode to receive this satellite.
@@ -165,9 +166,24 @@ telemetry packet in the terminal as soon as it receives it.
     and FEC with a (255,223) Reed-Solomon code. It also uses a G3RUH scrambler. The
     transceiver is the GomSpace NanoCom AX100, the same transceiver used in
     GOMX-3. You must use FM mode to receive this satellite.
+  * `cz02`
+    [QB50 CZ02 (VZLUSAT-1)](http://vzlusat1.cz/en/),
+    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a NanoCom
+    U482C transceiver, with the CSP protocol and a (255,223) Reed-Solomon code.
+    It also uses a CCSDS scrambler. You must use FM mode to receive this satellite.
+  * `dsat`
+    [D-SAT](https://www.dsat.space/), which transmits 4k8 AF GMSK telemetry in
+    the 70cm band. It uses a NanoCom U482C transceiver with the CSP protocol and
+    FEC with a (255,223) Reed-Solomon code. It also uses a CCSDS scrambler. This
+    receiver supports sending frames to the D-SAT groundstation software, which
+    decodes telemetry. See
+    [this post](http://destevez.net/2017/08/d-sat-support-added-to-gr-satellites/)
+    for detailed instructions. D-SAT transmits JPEG image from an onboard
+    camera. This decoder includes an image decoder which shows the images in
+    real time using feh.
   * `galassia`
     [GALASSIA](https://eoportal.org/web/eoportal/satellite-missions/content/-/article/galass-1),
-    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a Nanocom
+    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a NanoCom
     U482C transceiver with the the CSP protocol and FEC with a (255,223)
     Reed-Solomon code. It also uses a CCSDS scrambler. There is no telemetry
     parser yet, as the beacon format is unknown. This satellite is on a low
@@ -175,7 +191,7 @@ telemetry packet in the terminal as soon as it receives it.
     use FM mode to receive this satellite.
   * `gomx_1`
     [GOMX-1](https://directory.eoportal.org/web/eoportal/satellite-missions/g/gomx-1),
-    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a Nanocom
+    which transmits 4k8 AF GMSK telemetry in the 70cm band. It uses a NanoCom
     U482C transceiver with the CSP protocol and FEC with a (255,223)
     Reed-Solomon code. It also uses a CCSDS scrambler. The beacons
     include information from ADS-B beacons transmitted by terrestrial
@@ -224,7 +240,7 @@ telemetry packet in the terminal as soon as it receives it.
     the same time, you need to use an SDR receiver. The receivers
     `lilacsat_fcdpp` and `lilacsat_rtlsdr` can be used with a FUNcube Dongle
     Pro+ and an RTL-SDR respectively. These are complete receivers and
-    decoders. They submit telemetry to the PE0SAT server and can use Doppler
+    decoders. They submit telemetry to the SatNOGS database and can use Doppler
     correction with Gpredict, in the same way as the frontends from
     gr-frontends. When using Doppler correction with Gpredict, you have to set
     437.200MHz as the downlink frequency in Gpredict.
@@ -234,7 +250,16 @@ telemetry packet in the terminal as soon as it receives it.
     telemetry in the 2m band. It uses the AO-40 FEC protocol, which includes
     block interleaving, an r=1/2, k=7 convolutional code, CCSDS scrambling and
     two interleaved (160,128) Reed-Solomon codes. You must use SSB mode to
-    receive this satellite.    
+    receive this satellite.
+  * `nusat`
+    [ÑuSat-1 and -2](http://space.skyrocket.de/doc_sdat/nusat-1.htm),
+    which transmit 40k FSK telemetry in the 70cm band. They use FEC with a
+    (64, 60) Reed-Solomon code and a CRC-8. Since a sample rate of 48kHz is too
+    low to work with 40k FSK, the flowgraph is prepared to use an IQ recording
+    at 192kHz. Depending on the characteristics of your IQ recording you may
+    need to edit the flowgraph. The Reed-Solomon decoder is taken from the
+    [rscode](http://rscode.sourceforge.net/) library. A sample IQ recording is
+    included in [satellite-recordings](https://github.com/daniestevez/satellite-recordings).
   * `tw_1a`, `tw_1b`, `tw_1c`
     [TW-1A](http://space.skyrocket.de/doc_sdat/shangkeda-2.htm),
     [TW-1B](http://space.skyrocket.de/doc_sdat/njust-2.htm),
@@ -269,7 +294,7 @@ sudo ldconfig
 
 ## Submitting telemetry
 
-To sumbit telemetry to the [PE0SAT telemetry server](http://tlm.pe0sat.nl/) (or
+To sumbit telemetry to the [SatNOGS database](http://db.satnogs.org/) (or
 another SiDS telemetry server), you have to specify your callsign and
 coordinates. The callsign is specified using the `--callsign` parameter and the
 latitude and longitude are specified using the `--latitude` and `--longitude`

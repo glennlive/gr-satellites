@@ -33,5 +33,9 @@ install(FILES
     varlen_packet_tagger_pdu.h
     varlen_packet_framer.h
     burst_ample.h
-    encode_rs.h DESTINATION include/satellites
+    encode_rs.h 
+    varlen_packet_framer.h
+    nusat_decoder.h
+    rscode_decoder.h
+    DESTINATION include/satellites
 )

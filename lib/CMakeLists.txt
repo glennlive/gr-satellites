@@ -41,6 +41,11 @@ list(APPEND satellites_sources
     viterbi.c
     burst_ample_impl.cc
     encode_rs_impl.cc
+    nusat_decoder_impl.cc
+    rscode/berlekamp.c
+    rscode/galois.c
+    rscode/rs.c
+    rscode_decoder_impl.cc
 )
 
 set(satellites_sources "${satellites_sources}" PARENT_SCOPE)
