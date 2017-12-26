@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<block>
+  <name>CSP Header Mangler</name>
+  <key>satellites_csp_header_mangler</key>
+  <category>[Satellites]/CSP</category>
+  <import>import satellites</import>
+  <make>satellites.csp_header_mangler($crc32, $hmac, $swap_endian)</make>
+
+  <param>
+    <name>Swap Endianness</name>
+    <key>swap_endian</key>
+    <value>True</value>
+    <type>bool</type>
+    <option>
+      <name>False</name>
+      <key>False</key>
+    </option>
+    <option>
+      <name>True</name>
+      <key>True</key>
+    </option>
+  </param>
+  <param>
+    <name>Use CRC32</name>
+    <key>crc32</key>
+    <value>True</value>
+    <type>bool</type>
+    <option>
+      <name>False</name>
+      <key>False</key>
+    </option>
+    <option>
+      <name>True</name>
+      <key>True</key>
+    </option>
+  </param>
+  <param>
+    <name>Use HMAC</name>
+    <key>use_hmac</key>
+    <value>True</value>
+    <type>bool</type>
+    <option>
+      <name>False</name>
+      <key>False</key>
+    </option>
+    <option>
+      <name>True</name>
+      <key>True</key>
+    </option>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>message</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>message</type>
+  </source>
+</block>
