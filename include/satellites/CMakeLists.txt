@@ -29,9 +29,10 @@ install(FILES
     ax100_decode.h
     u482c_decode.h
     lilacsat1_demux.h
+    additive_scrambler_pdu.h
+    varlen_packet_framer.h
     varlen_packet_tagger.h
     varlen_packet_tagger_pdu.h
-    varlen_packet_framer.h
     burst_ample.h
     encode_rs.h 
     varlen_packet_framer.h

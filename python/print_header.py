@@ -29,11 +29,13 @@ class print_header(gr.basic_block):
     """
     Print the CSP header of a CSP packet
     """
-    def __init__(self):
+    def __init__(self, endianness=True):
         gr.basic_block.__init__(self,
             name="print_header",
             in_sig=[],
             out_sig=[])
+
+        self.endianness = endianness
 
         self.message_port_register_in(pmt.intern('in'))
         self.set_msg_handler(pmt.intern('in'), self.handle_msg)
@@ -45,7 +47,7 @@ class print_header(gr.basic_block):
             return
         packet = array.array("B", pmt.u8vector_elements(msg))
         try:
-            print(csp_header.CSP(packet[:4]))
+            print(csp_header.CSP(packet[:4], self.endianness))
         except ValueError as e:
             print e
 

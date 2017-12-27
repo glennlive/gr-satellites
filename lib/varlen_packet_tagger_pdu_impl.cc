@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2017 Glenn Richardson <glenn@spacequest.com> 
+ * Copyright 2017 Glenn Richardson <glenn@spacequest.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,8 @@ namespace gr {
                                int max_packet_size,
                                endianness_t header_endianness,
                                endianness_t output_endianness,
-                               bool use_golay)
+                               bool use_golay,
+                               int bits_per_byte)
     {
       return gnuradio::get_initial_sptr
         (new varlen_packet_tagger_pdu_impl(sync_key,
@@ -52,7 +53,7 @@ namespace gr {
                                         max_packet_size,
                                         header_endianness,
                                         output_endianness,
-                                        use_golay));
+                                        use_golay, bits_per_byte));
     }
 
     varlen_packet_tagger_pdu_impl::varlen_packet_tagger_pdu_impl(
@@ -62,14 +63,16 @@ namespace gr {
         int max_packet_size,
         endianness_t header_endianness,
         endianness_t output_endianness,
-        bool use_golay) : gr::block("varlen_packet_tagger_pdu",
-                        io_signature::make(1, 1, sizeof(char)),
+        bool use_golay,
+        int bits_per_byte) : gr::block("varlen_packet_tagger_pdu",
+                        io_signature::make(1, 1, 1),
                         io_signature::make(0, 0, 0)),
       d_header_length(length_field_size),
       d_mtu(max_packet_size),
       d_hend(header_endianness),
       d_oend(output_endianness),
       d_use_golay(use_golay),
+      d_bits_per_byte(bits_per_byte),
       d_have_sync(false)
     {
 
@@ -127,27 +130,28 @@ namespace gr {
       int golay_res;
 
       unsigned char *p;
-      
+
       if (d_have_sync) {
         if (d_header_length > ninput_items[0]) {
           // not enough data yet
+          printf("work called without enough input %d > %d\n", d_header_length, ninput_items[0]);
           return 0;
         }
-        
+
         if (d_use_golay) {
           golay_field = bits2len(in);
           golay_res = decode_golay24(&golay_field);
           if (golay_res >= 0) {
-            packet_len = (0xFFF & golay_field);
+            packet_len = (0xFFF & golay_field) * 8;
           } else {
             GR_LOG_WARN(d_debug_logger, "Golay decode failed.");
             d_have_sync = false;
             consume_each(1); // skip ahead
             return 0;
-          }          
+          }
 
-        } else { 
-          packet_len = bits2len(in);
+        } else {
+          packet_len = bits2len(in) * 8;
         }
 
         if (packet_len > d_mtu) {
@@ -158,7 +162,7 @@ namespace gr {
           consume_each(1); // skip ahead
           return 0;
         }
-        
+
         d_ninput_items_required = d_header_length + packet_len;
 
 
@@ -174,43 +178,47 @@ namespace gr {
                                          % golay_res % packet_len);
             }
           }
-      
+
+          printf("Ready to output %d bytes from input %d\n", packet_len, ninput_items[0] - d_header_length);
           p = (unsigned char*) &in[d_header_length];
+          packet_len /= d_bits_per_byte;
           switch(d_oend) {
           default:
           case GR_MSB_FIRST:
             for (int i=0; i<packet_len; i++) {
               uint8_t tmp = 0;
-              for (int j=0; j<8; j++ ) {
+              for (int j=0; j<d_bits_per_byte; j++ ) {
                 tmp = (tmp<<1) | (0x01 & p[j]);
               }
-              p += 8;
+              p += d_bits_per_byte;
               dout[i] = tmp;
             }
             break;
           case GR_LSB_FIRST:
             for (int i=0; i<packet_len; i++) {
               uint8_t tmp = 0;
-              for (int j=7; j>=0; j-- ) {
+              for (int j=d_bits_per_byte; j>=0; j-- ) {
                 tmp = (tmp<<1) | (0x01 & p[j]);
+                p++;
               }
-              p += 8;
+              p += d_bits_per_byte;
               dout[i] = tmp;
             }
             break;
           }
+          printf("Sending %d bytes\n", packet_len);
 	  message_port_pub(pmt::mp("out"),
 			   pmt::cons(pmt::PMT_NIL,
 				     pmt::init_u8vector(packet_len, dout)));
           d_have_sync = false;
 
           // consuming only the header allows for
-          // ... multiple syncs per 'packet', 
+          // ... multiple syncs per 'packet',
           // ... in case the sync was incorrectly tagged
           consume_each(d_header_length);
           d_ninput_items_required = d_header_length + 1;
           return 0;
-        } 
+        }
 
       } else {
         // find the next sync tag, drop all other data

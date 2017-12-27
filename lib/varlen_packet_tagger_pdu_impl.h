@@ -1,6 +1,6 @@
 /* -*- c++ -*- */
 /*
- * Copyright 2017 Glenn Richardson <glenn@spacequest.com> 
+ * Copyright 2017 Glenn Richardson <glenn@spacequest.com>
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@ namespace gr {
       int d_header_length; // bit size of packet length field
       int d_mtu; // maximum packet size in bits
       bool d_use_golay; // decode golay packet length
+      int d_bits_per_byte; // output bit packing
       endianness_t d_hend; // header endianness
       endianness_t d_oend; // output endianness
 
@@ -43,7 +44,7 @@ namespace gr {
       int bits2len(const unsigned char *in);
 
      public:
-      varlen_packet_tagger_pdu_impl(const std::string &sync_key, const std::string &packet_key, int length_field_size, int max_packet_size, endianness_t hend, endianness_t oend, bool use_golay);
+      varlen_packet_tagger_pdu_impl(const std::string &sync_key, const std::string &packet_key, int length_field_size, int max_packet_size, endianness_t hend, endianness_t oend, bool use_golay, int bits_per_byte);
       ~varlen_packet_tagger_pdu_impl();
 
       // Where all the action really happens
