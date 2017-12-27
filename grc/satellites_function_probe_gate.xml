@@ -1,0 +1,129 @@
+<?xml version="1.0"?>
+<!--
+###################################################
+##Variable function probe gate
+###################################################
+ -->
+<block>
+	<name>Function Probe Gate</name>
+  <key>variable_function_probe_gate</key>
+  <category>[Satellites]/Misc</category>
+  <import>import time</import>
+	<import>import threading</import>
+	<var_make>self.$(id) = $(id) = $value</var_make>
+	<make>
+def _$(id)_probe_gate():
+    #set $obj = 'self' + ('.' + $block_id() if $block_id() else '')
+    #set $dst_obj = 'self' + ('.' + $dst_block_id() if $dst_block_id() else '')
+    gated = True
+    while True:
+        val = $(obj).$(function_name())($(function_args()))
+        new_gate = gated
+        if (val > $high_threshold):
+           new_gate = $high_value
+        elif (val &lt; $low_threshold):
+           new_gate = $low_value
+
+        if (gated != new_gate):
+            gated = new_gate
+            try:
+                $(dst_obj).$(gate_function_name())(new_gate)
+            except AttributeError:
+                pass
+        time.sleep(1.0 / ($poll_rate))
+_$(id)_thread = threading.Thread(target=_$(id)_probe_gate)
+_$(id)_thread.daemon = True
+_$(id)_thread.start()
+    </make>
+	<callback>self.set_$(id)($value)</callback>
+	<param>
+		<name>Probed Block ID</name>
+		<key>block_id</key>
+		<value>my_block_0</value>
+		<type>string</type>
+	</param>
+	<param>
+		<name>Probe Function Name</name>
+		<key>function_name</key>
+		<value>get_number</value>
+		<type>string</type>
+	</param>
+	<param>
+		<name>Probe Function Args</name>
+		<key>function_args</key>
+		<value></value>
+		<type>string</type>
+		<hide>#if $function_args() then 'none' else 'part'#</hide>
+	</param>
+	<param>
+		<name>Poll Rate (Hz)</name>
+		<key>poll_rate</key>
+		<value>10</value>
+		<type>real</type>
+	</param>
+	<param>
+		<name>Initial Value</name>
+		<key>value</key>
+		<value>0</value>
+		<type>raw</type>
+        <hide>part</hide>
+	</param>
+	<param>
+		<name>Gateable Block ID</name>
+		<key>dst_block_id</key>
+		<value>my_block_1</value>
+		<type>string</type>
+	</param>
+	<param>
+		<name>Gate Function Name</name>
+		<key>gate_function_name</key>
+		<value>set_number</value>
+		<type>string</type>
+  </param>
+  <param>
+    <name>High Threshold</name>
+    <key>high_threshold</key>
+    <value>-50.0</value>
+    <type>real</type>
+  </param>
+  <param>
+    <name>High Setting</name>
+    <key>high_value</key>
+    <value>True</value>
+    <type>bool</type>
+  </param>
+  <param>
+    <name>Low Threshold</name>
+    <key>low_threshold</key>
+    <value>-60.0</value>
+    <type>real</type>
+  </param>
+  <param>
+    <name>Low Setting</name>
+    <key>low_value</key>
+    <value>False</value>
+    <type>bool</type>
+  </param>
+	<doc>
+Periodically probe a function and set its value to this variable.
+
+Set the values for block ID, function name, and function args appropriately: \
+Probed Block ID should be the ID of another block in this flow graph. \
+An empty Block ID references the flow graph itself. \
+Function name should be the name of a class method on that block. \
+Function args are the parameters passed into that function. \
+For a function with no arguments, leave function args blank. \
+When passing a string for the function arguments, quote the string literal: '"arg"'.
+
+The values will used literally, and generated into the following form:
+    self.block_id.function_name(function_args)
+or, if the Block ID is empty,
+    self.function_name(function_args)
+
+To poll a stream for a level, use this with the probe signal block.
+
+The Gateable Block ID and Gate Function Name are used to toggle the output of \
+a second block's value if it crosses the given threshold.
+
+	</doc>
+</block>
