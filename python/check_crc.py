@@ -31,7 +31,7 @@ class check_crc(gr.basic_block):
     """
     docstring for block check_crc
     """
-    def __init__(self, include_header, verbose, force=False):
+    def __init__(self, include_header, verbose, endianness=True, force=False):
         gr.basic_block.__init__(self,
             name="check_crc",
             in_sig=[],
@@ -40,6 +40,7 @@ class check_crc(gr.basic_block):
         self.include_header = include_header
         self.verbose = verbose
         self.force = force
+        self.endianness = endianness
         
         self.message_port_register_in(pmt.intern('in'))
         self.set_msg_handler(pmt.intern('in'), self.handle_msg)
@@ -53,7 +54,7 @@ class check_crc(gr.basic_block):
             return
         packet = array.array("B", pmt.u8vector_elements(msg))
         try:
-            header = csp_header.CSP(packet[:4])
+            header = csp_header.CSP(packet[:4], self.endianness)
         except ValueError as e:
             if self.verbose:
                 print e

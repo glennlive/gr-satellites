@@ -4,7 +4,7 @@
   <key>satellites_check_crc</key>
   <category>[Satellites]/CSP</category>
   <import>import satellites</import>
-  <make>satellites.check_crc($include_header, $verbose, $force)</make>
+  <make>satellites.check_crc($include_header, $verbose, $endianness, $force)</make>
   <param>
     <name>Include header</name>
     <key>include_header</key>
@@ -18,7 +18,19 @@
       <key>False</key>
     </option>
   </param>
-
+  <param>
+    <name>Endianness</name>
+    <key>endianness</key>
+    <type>bool</type>
+    <option>
+      <name>MSB</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>LSB</name>
+      <key>False</key>
+    </option>
+  </param>
   <param>
     <name>Verbose</name>
     <key>verbose</key>

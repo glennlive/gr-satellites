@@ -4,7 +4,21 @@
   <key>satellites_print_header</key>
   <category>[Satellites]/CSP</category>
   <import>import satellites</import>
-  <make>satellites.print_header()</make>
+  <make>satellites.print_header($endianness)</make>
+  <param>
+    <name>Endianness</name>
+    <key>endianness</key>
+    <type>bool</type>
+    <option>
+      <name>MSB</name>
+      <key>True</key>
+    </option>
+    <option>
+      <name>LSB</name>
+      <key>False</key>
+    </option>
+  </param>
+
   <sink>
     <name>in</name>
     <type>message</type>

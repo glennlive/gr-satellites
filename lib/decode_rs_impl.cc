@@ -107,8 +107,8 @@ namespace gr {
       if (rs_res >= 0) {
 	frame_len -= 32;
 
-	if (d_verbose) {
-	  std::printf("Reed-Solomon decode OK. Bytes corrected: %d.\n", rs_res);
+	if ((d_verbose) && (rs_res>0)) {
+	  std::printf("Reed-Solomon decoded OK. (Bytes corrected: %d)\n", rs_res);
 	}
 
 	// Send by GNUradio message
